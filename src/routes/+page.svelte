@@ -1,10 +1,27 @@
 <script lang="ts">
-	import VideoContainer from './components/VideoContainer.svelte';
-	let videos = ['BossbabyIntro.webm', 'Bundeswehr.webm', 'Chrysanthemen.webm', 'DeineFreundinnen.webm', 'Diamantstein.webm', 'FuerImmer.webm', 'HartGehenOhneGrund.webm', 'Herbst.webm', 'IchWuenschteEsWuerdMichKuemmern.webm', 'LieferandoFuer2.webm', 'LoserABC.webm', 'NowitzkiFlow.webm', 'Shotta2.webm', 'SterneNehmen.webm', 'TheorieUndPraxis.webm', 'Woah.webm'];
-</script>
+	import { goto } from '$app/navigation'
 
-<div class="grid grid-cols-4 grid-rows-4 bg-white w-screen h-screen">
-	{#each videos as video}
-		<VideoContainer video={video} />
-	{/each}
-</div>
+	
+	function handleButtonClick() {
+		goto('/Showcase')
+	}
+  </script>
+	
+  <div class="relative h-screen">
+	  <div class="flex justify-center items-center size-inherit">
+		<video
+		  id="videoPlayer"
+		  disablePictureInPicture
+		  autoplay
+		  loop
+		  class="absolute inset-0 w-full h-full object-cover"
+		  muted
+		>
+		  <source src={'src/public/SoulyAnimation.webm'} type="video/webm" />
+		</video>
+		<button on:click={handleButtonClick} class="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white py-2 px-4 rounded font-pixelify-sans">
+		  Click to Load Videos
+		</button>
+	  </div>
+  </div>
+  
