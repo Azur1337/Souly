@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-
+	import Cube from './components/Cube.svelte'
 	
 	function handleButtonClick() {
 		goto('/Showcase')
@@ -19,6 +19,7 @@
 		>
 		  <source src={'src/public/SoulyAnimation.webm'} type="video/webm" />
 		</video>
+		<Cube/>
 		<button on:click={handleButtonClick} class="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white py-2 px-4 rounded font-pixelify-sans">
 		  Click to Load Videos
 		</button>
