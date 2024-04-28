@@ -1,75 +1,61 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import * as THREE from 'three';
+	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-	let scene: any, camera: any, renderer: any, heart: any;
+	let scene: any, camera: any, renderer: any, heartObject: any;
 
-	function init() {
-		// Scene
+	onMount(() => {
+		const width = window.innerWidth;
+		const height = window.innerHeight;
+
 		scene = new THREE.Scene();
 
-		// Camera
-		camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-		camera.position.z = 10;
+		const loader = new GLTFLoader();
+		loader.load(
+			'src/public/heart.glb',
+			function (gltf) {
+				heartObject = gltf.scene;
+				heartObject.position.set(0, 0, 0);
 
-		// Render
-		renderer = new THREE.WebGLRenderer({ antialias: true });
-		renderer.setSize(window.innerWidth, window.innerHeight);
-		document.body.appendChild(renderer.domElement);
+				heartObject.traverse((child) => {
+					if (child instanceof THREE.Mesh) {
+						child.material.color.set(0xff0000);
+					}
+				});
 
-		// geometry
-		const heartShape = new THREE.Shape();
-		heartShape.moveTo(0, 0);
-		heartShape.bezierCurveTo(0, 0, -5, -5, -25, -5);
-		heartShape.bezierCurveTo(-55, -5, -55, 15, -55, 15);
-		heartShape.bezierCurveTo(-55, 35, -35, 55, 0, 75);
-		heartShape.bezierCurveTo(35, 55, 55, 35, 55, 15);
-		heartShape.bezierCurveTo(55, 15, 55, -5, 25, -5);
-		heartShape.bezierCurveTo(10, -5, 0, 0, 0, 0);
+				scene.add(heartObject);
 
-		const extrudeSettings = {
-			bevelEnabled: true,
-			bevelSegments: 10,
-			steps: 12,
-			bevelSize: 3,
-			bevelThickness: 3
-		};
-		const geometry = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
+				renderer = new THREE.WebGLRenderer({ antialias: true });
+				renderer.setSize(width, height);
+				document.body.appendChild(renderer.domElement);
 
-		// Material
-		const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+				if (renderer) {
+					console.log('Renderer is ready');
+					animate();
+				}
+			},
+			undefined,
+			function (error) {
+				console.error(error);
+			}
+		);
 
-		// mesh
-		heart = new THREE.Mesh(geometry, material);
-		heart.scale.set(0.025, 0.025, 0.025);
-		scene.add(heart);
+		camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+		camera.position.z = 20;
 
-		// Animation
 		function animate() {
 			requestAnimationFrame(animate);
 
-			heart.rotation.y += 0.05;
+			heartObject.rotation.x += 0.01;
 			renderer.render(scene, camera);
 		}
-
-		animate();
-	}
-
-	onMount(() => {
-		init();
 	});
 
 	onDestroy(() => {
 		if (renderer) {
 			renderer.dispose();
+			document.body.removeChild(renderer.domElement);
 		}
 	});
 </script>
-
-<canvas />
-
-<style>
-	canvas {
-		display: block;
-	}
-</style>

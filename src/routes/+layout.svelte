@@ -4,6 +4,5 @@
 </script>
 
 <div class="absolute flex items-center justify-center pointer-events-none">
-	<Heart />
 </div>
 <slot />

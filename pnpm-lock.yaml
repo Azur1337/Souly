@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  GLTFLoader:
+    specifier: link:three/examples/jsm/loaders/GLTFLoader
+    version: link:three/examples/jsm/loaders/GLTFLoader
   svelte-routing:
     specifier: ^2.12.0
     version: 2.12.0
