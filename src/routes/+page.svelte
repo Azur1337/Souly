@@ -4,9 +4,8 @@
 	import Button from './components/Button.svelte';
 </script>
 
-<div class="relative h-screen">
+<div class="absolute h-screen">
 	<div class="flex justify-center items-center size-inherit">
-		<Button navigateTo={'Showcase'} />
 		<Heart />
 		<!--<video
 			id="videoPlayer"
